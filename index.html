@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>운세 상담소</title>
+<style>
+  body {
+    margin: 0;
+    background: #f5ecd9;
+    color: #4a2c1a;
+    font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
+    padding-bottom: 90px;
+  }
+  .wrap { max-width: 600px; margin: 0 auto; padding: 16px; }
+  .top-img { text-align: center; }
+  .top-img img { max-width: 100%; height: auto; border-radius: 12px; }
+  h1 { text-align: center; font-size: 34px; margin: 12px 0; }
+  .intro { text-align: center; margin-bottom: 20px; }
+  .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .menu button {
+    font-size: 19px; padding: 16px 8px; border: 2px solid #7b2d6b;
+    background: #fffaf0; color: #4a2c1a; border-radius: 10px; cursor: pointer;
+    font-family: inherit;
+  }
+  .menu button:hover, .menu button.on { background: #7b2d6b; color: #fff; }
+  #guide {
+    margin-top: 16px; padding: 16px; background: #fffaf0;
+    border-left: 6px solid #7b2d6b; border-radius: 8px; min-height: 80px;
+  }
+  .info { margin-top: 24px; text-align: center; }
+  .bar {
+    position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: 8px;
+    padding: 10px; background: #f5ecd9; border-top: 1px solid #cdbb98;
+  }
+  .bar a, .bar button {
+    flex: 1; text-align: center; padding: 14px 0; font-size: 19px; font-weight: bold;
+    background: #7b2d6b; color: #fff; border: none; border-radius: 10px;
+    text-decoration: none; font-family: inherit; cursor: pointer;
+  }
+  .bar a:hover, .bar button:hover { background: #5e2052; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top-img">
+    <img src="little_cloud_wizard.png" alt="황금 구슬을 든 구름 도사 꼬마">
+  </div>
+
+  <h1>운세 상담소</h1>
+
+  <div class="intro">
+    사주 풀이, 궁합 상담, 작명을 도와드립니다.<br>
+    차분히 이야기 나누며 마음의 길을 함께 찾아요.<br>
+    편하게 문의해 주세요.
+  </div>
+
+  <div class="menu">
+    <button onclick="show(this,'saju')">사주 풀이</button>
+    <button onclick="show(this,'gunghap')">궁합 보기</button>
+    <button onclick="show(this,'name')">작명 서비스</button>
+    <button onclick="show(this,'book')">예약 문의</button>
+  </div>
+
+  <div id="guide">위 버튼을 눌러 안내를 확인하세요.</div>
+
+  <div class="info">
+    <b>전화 010-0000-0000</b><br>
+    영업시간: 평일 10시 ~ 19시
+  </div>
+</div>
+
+<div class="bar">
+  <a href="tel:01000000000">전화하기</a>
+  <button onclick="show(document.querySelectorAll('.menu button')[3],'book'); document.getElementById('guide').scrollIntoView();">예약 문의</button>
+</div>
+
+<script>
+  var text = {
+    saju: "태어난 날과 시간으로 타고난 성향과 앞으로의 흐름을 풀어드립니다.",
+    gunghap: "두 분의 생년월일로 서로 잘 맞는 점과 조심할 점을 살펴드립니다.",
+    name: "아기 이름, 새 이름, 가게 이름을 좋은 뜻과 기운으로 지어드립니다.",
+    book: "전화로 편하게 예약해 주세요. 평일 10시 ~ 19시, 010-0000-0000"
+  };
+  function show(btn, key) {
+    document.getElementById('guide').textContent = text[key];
+    var all = document.querySelectorAll('.menu button');
+    for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
+    btn.classList.add('on');
+  }
+</script>
+</body>
+</html>
