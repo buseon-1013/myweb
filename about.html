@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>소개 | 운세 상담소</title>
+<style>
+  /* ===== 색상 (여기서 바꾸면 전체 색이 바뀝니다) ===== */
+  :root {
+    --배경: #f5ede0;
+    --카드: #fbf7f0;
+    --글씨: #4a2e1f;
+    --연한글씨: #7a5c48;
+    --강조: #7b2d5f;
+    --강조진하게: #5e1f48;
+    --선: #e2d4c0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--배경); color: var(--글씨);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    font-size: 17px; line-height: 1.7;
+    padding-bottom: 96px; word-break: keep-all;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+
+  /* ===== 위쪽 이동 메뉴 ===== */
+  .위메뉴 { position: sticky; top: 0; z-index: 10; background: var(--배경); border-bottom: 1px solid var(--선); }
+  .위메뉴 ul { max-width: 640px; margin: 0 auto; display: flex; list-style: none; }
+  .위메뉴 li { flex: 1; }
+  .위메뉴 a {
+    display: block; text-align: center; padding: 14px 0 12px;
+    font-size: 17px; font-weight: 700; color: var(--연한글씨); text-decoration: none;
+    border-bottom: 3px solid transparent; transition: color 0.15s;
+  }
+  .위메뉴 a:hover { color: var(--강조); }
+  .위메뉴 a.지금 { color: var(--강조); border-bottom-color: var(--강조); }
+
+  /* ===== 페이지 제목 ===== */
+  header { text-align: center; padding: 40px 0 24px; }
+  header h1 { font-size: 30px; font-weight: 800; }
+  header .줄 { width: 48px; height: 3px; background: var(--강조); margin: 16px auto 0; border-radius: 2px; }
+
+  /* ===== 내용 칸 ===== */
+  .칸 {
+    background: var(--카드); border: 1px solid var(--선); border-radius: 14px;
+    padding: 22px 20px; margin-bottom: 16px;
+  }
+  .칸 h2 { font-size: 20px; color: var(--강조); margin-bottom: 8px; }
+  .칸 p + p { margin-top: 8px; }
+  .칸 ul { padding-left: 1.2em; }
+  .칸 li + li { margin-top: 4px; }
+
+  /* ===== 연락처 ===== */
+  footer { margin-top: 32px; border-top: 1px solid var(--선); padding: 28px 0 20px; text-align: center; }
+  footer h2 { font-size: 18px; margin-bottom: 10px; }
+  footer .번호 { font-size: 22px; font-weight: 800; color: var(--강조); text-decoration: none; }
+  footer .시간 { color: var(--연한글씨); margin-top: 4px; }
+
+  /* ===== 아래 고정 버튼 ===== */
+  .고정버튼 {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: var(--배경); border-top: 1px solid var(--선);
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    display: flex; gap: 10px; justify-content: center;
+  }
+  .고정버튼 a {
+    flex: 1; max-width: 300px; text-align: center; text-decoration: none;
+    font-size: 18px; font-weight: 700; padding: 15px 0; border-radius: 12px;
+    transition: background-color 0.15s;
+  }
+  .전화 { background: var(--강조); color: #fff; }
+  .전화:hover { background: var(--강조진하게); }
+  .예약 { background: var(--카드); color: var(--강조); border: 2px solid var(--강조); }
+  .예약:hover { background: #f1e3ea; }
+</style>
+</head>
+<body>
+
+<!-- 위쪽 이동 메뉴 -->
+<nav class="위메뉴">
+  <ul>
+    <li><a href="index.html">홈</a></li>
+    <li><a href="about.html" class="지금">소개</a></li>
+    <li><a href="price.html">요금</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+  <header>
+    <h1>상담소 소개</h1>
+    <div class="줄"></div>
+  </header>
+
+  <!-- 아래 문구는 모두 예시입니다. 바꾸셔도 됩니다. -->
+  <section class="칸">
+    <h2>인사말</h2>
+    <p>운세 상담소를 찾아 주셔서 감사합니다.</p>
+    <p>사주는 정해진 운명을 말하는 것이 아니라, 나에게 맞는 길을 찾는 지도라고 생각합니다. 지금 고민하시는 일을 편하게 말씀해 주세요.</p>
+  </section>
+
+  <section class="칸">
+    <h2>이런 분께 권해 드립니다</h2>
+    <ul>
+      <li>올해 일이나 재물의 흐름이 궁금하신 분</li>
+      <li>결혼이나 연애를 앞두고 궁합이 궁금하신 분</li>
+      <li>아기 이름이나 새 이름을 찾고 계신 분</li>
+    </ul>
+  </section>
+
+  <section class="칸">
+    <h2>상담 방법</h2>
+    <ul>
+      <li>전화로 예약해 주세요.</li>
+      <li>생년월일과 태어난 시간을 알려 주세요.</li>
+      <li>약속한 시간에 차분히 상담해 드립니다.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <h2>연락처</h2>
+    <a class="번호" href="tel:01000000000">010-0000-0000</a>
+    <p class="시간">평일 10시 ~ 19시</p>
+  </footer>
+
+</div>
+
+<!-- 화면 아래에 항상 보이는 버튼 -->
+<div class="고정버튼">
+  <a class="전화" href="tel:01000000000">📞 전화하기</a>
+  <a class="예약" href="index.html#안내칸">예약 문의</a>
+</div>
+
+</body>
+</html>
