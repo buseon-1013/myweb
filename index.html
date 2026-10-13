@@ -15,168 +15,108 @@
     --강조진하게: #5e1f48;
     --선: #e2d4c0;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
     background: var(--배경);
     color: var(--글씨);
     font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
     font-size: 17px;
     line-height: 1.7;
-    padding-bottom: 96px; /* 아래 고정 버튼에 가려지지 않도록 */
+    padding-bottom: 96px;
     word-break: keep-all;
   }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
 
-  .wrap {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 0 20px;
+  /* ===== 위쪽 이동 메뉴 ===== */
+  .위메뉴 {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--배경);
+    border-bottom: 1px solid var(--선);
   }
+  .위메뉴 ul {
+    max-width: 640px; margin: 0 auto;
+    display: flex; list-style: none;
+  }
+  .위메뉴 li { flex: 1; }
+  .위메뉴 a {
+    display: block; text-align: center;
+    padding: 14px 0 12px;
+    font-size: 17px; font-weight: 700;
+    color: var(--연한글씨); text-decoration: none;
+    border-bottom: 3px solid transparent;
+    transition: color 0.15s;
+  }
+  .위메뉴 a:hover { color: var(--강조); }
+  .위메뉴 a.지금 { color: var(--강조); border-bottom-color: var(--강조); }
 
   /* ===== 제목 ===== */
-  header {
-    text-align: center;
-    padding: 56px 0 28px;
-  }
-  header .작은글 {
-    color: var(--강조);
-    font-size: 14px;
-    letter-spacing: 0.2em;
-    margin-bottom: 8px;
-  }
-  header h1 {
-    font-size: 40px;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-  }
-  header .줄 {
-    width: 48px;
-    height: 3px;
-    background: var(--강조);
-    margin: 20px auto 0;
-    border-radius: 2px;
-  }
+  header { text-align: center; padding: 44px 0 28px; }
+  header .작은글 { color: var(--강조); font-size: 14px; letter-spacing: 0.2em; margin-bottom: 8px; }
+  header h1 { font-size: 40px; font-weight: 800; letter-spacing: 0.05em; }
+  header .줄 { width: 48px; height: 3px; background: var(--강조); margin: 20px auto 0; border-radius: 2px; }
 
   /* ===== 소개 글 ===== */
-  .소개 {
-    text-align: center;
-    color: var(--연한글씨);
-    margin-bottom: 36px;
-  }
+  .소개 { text-align: center; color: var(--연한글씨); margin-bottom: 36px; }
   .소개 p + p { margin-top: 4px; }
 
   /* ===== 메뉴 버튼 ===== */
-  .메뉴안내 {
-    text-align: center;
-    font-size: 15px;
-    color: var(--연한글씨);
-    margin-bottom: 12px;
-  }
-  .메뉴 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
+  .메뉴안내 { text-align: center; font-size: 15px; color: var(--연한글씨); margin-bottom: 12px; }
+  .메뉴 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .메뉴 button {
-    font: inherit;
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--강조);
-    background: var(--카드);
-    border: 2px solid var(--강조);
-    border-radius: 14px;
-    padding: 20px 8px;
-    cursor: pointer;
+    font: inherit; font-size: 18px; font-weight: 700;
+    color: var(--강조); background: var(--카드);
+    border: 2px solid var(--강조); border-radius: 14px;
+    padding: 20px 8px; cursor: pointer;
     transition: background-color 0.15s, color 0.15s;
   }
-  .메뉴 button:hover,
-  .메뉴 button:focus-visible {
-    background: var(--강조);
-    color: #fff;
-    outline: none;
-  }
-  .메뉴 button.선택됨 {
-    background: var(--강조);
-    color: #fff;
+  .메뉴 button:hover, .메뉴 button:focus-visible, .메뉴 button.선택됨 {
+    background: var(--강조); color: #fff; outline: none;
   }
 
   /* ===== 안내 글 칸 ===== */
   .안내칸 {
-    margin-top: 16px;
-    background: var(--카드);
-    border: 1px solid var(--선);
-    border-radius: 14px;
-    padding: 22px 20px;
-    min-height: 120px;
+    margin-top: 16px; background: var(--카드);
+    border: 1px solid var(--선); border-radius: 14px;
+    padding: 22px 20px; min-height: 120px;
+    scroll-margin-top: 70px;
   }
-  .안내칸 h2 {
-    font-size: 20px;
-    color: var(--강조);
-    margin-bottom: 8px;
-  }
-  .안내칸 .처음 {
-    color: var(--연한글씨);
-    text-align: center;
-    padding-top: 26px;
-  }
+  .안내칸 h2 { font-size: 20px; color: var(--강조); margin-bottom: 8px; }
+  .안내칸 .처음 { color: var(--연한글씨); text-align: center; padding-top: 26px; }
 
   /* ===== 연락처 ===== */
-  footer {
-    margin-top: 44px;
-    border-top: 1px solid var(--선);
-    padding: 28px 0 20px;
-    text-align: center;
-  }
-  footer h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
-  footer .번호 {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--강조);
-    text-decoration: none;
-  }
+  footer { margin-top: 44px; border-top: 1px solid var(--선); padding: 28px 0 20px; text-align: center; }
+  footer h2 { font-size: 18px; margin-bottom: 10px; }
+  footer .번호 { font-size: 22px; font-weight: 800; color: var(--강조); text-decoration: none; }
   footer .시간 { color: var(--연한글씨); margin-top: 4px; }
 
   /* ===== 아래 고정 버튼 ===== */
   .고정버튼 {
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
-    background: var(--배경);
-    border-top: 1px solid var(--선);
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+    background: var(--배경); border-top: 1px solid var(--선);
     padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    z-index: 10;
+    display: flex; gap: 10px; justify-content: center;
   }
   .고정버튼 a {
-    flex: 1;
-    max-width: 300px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: 700;
-    padding: 15px 0;
-    border-radius: 12px;
+    flex: 1; max-width: 300px; text-align: center; text-decoration: none;
+    font-size: 18px; font-weight: 700; padding: 15px 0; border-radius: 12px;
     transition: background-color 0.15s;
   }
-  .전화 {
-    background: var(--강조);
-    color: #fff;
-  }
+  .전화 { background: var(--강조); color: #fff; }
   .전화:hover { background: var(--강조진하게); }
-  .예약 {
-    background: var(--카드);
-    color: var(--강조);
-    border: 2px solid var(--강조);
-  }
+  .예약 { background: var(--카드); color: var(--강조); border: 2px solid var(--강조); }
   .예약:hover { background: #f1e3ea; }
 </style>
 </head>
 <body>
+
+<!-- 위쪽 이동 메뉴 -->
+<nav class="위메뉴">
+  <ul>
+    <li><a href="index.html" class="지금">홈</a></li>
+    <li><a href="about.html">소개</a></li>
+    <li><a href="price.html">요금</a></li>
+  </ul>
+</nav>
 
 <div class="wrap">
 
@@ -194,12 +134,12 @@
   </section>
 
   <p class="메뉴안내">궁금한 메뉴를 눌러 보세요</p>
-  <nav class="메뉴">
+  <div class="메뉴">
     <button type="button" data-id="saju">사주 풀이</button>
     <button type="button" data-id="gunghap">궁합 보기</button>
     <button type="button" data-id="name">작명 서비스</button>
     <button type="button" data-id="reserve">예약 문의</button>
-  </nav>
+  </div>
 
   <section class="안내칸" id="안내칸" aria-live="polite">
     <p class="처음">위 메뉴를 누르면 이곳에 안내가 나옵니다.</p>
@@ -255,10 +195,12 @@
     b.addEventListener("click", function () { 보여주기(b.dataset.id); });
   });
 
-  // 아래 '예약 문의' 버튼을 누르면 예약 안내를 보여줌
   document.getElementById("예약버튼").addEventListener("click", function () {
     보여주기("reserve");
   });
+
+  // 다른 페이지에서 '예약 문의'를 누르고 왔을 때도 예약 안내를 보여줌
+  if (location.hash === "#안내칸") { 보여주기("reserve"); }
 </script>
 
 </body>
