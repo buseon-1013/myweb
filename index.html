@@ -2,95 +2,264 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>운세 상담소</title>
 <style>
+  /* ===== 색상 (여기서 바꾸면 전체 색이 바뀝니다) ===== */
+  :root {
+    --배경: #f5ede0;      /* 연한 베이지 */
+    --카드: #fbf7f0;      /* 조금 더 밝은 베이지 */
+    --글씨: #4a2e1f;      /* 진한 갈색 */
+    --연한글씨: #7a5c48;
+    --강조: #7b2d5f;      /* 자주색 */
+    --강조진하게: #5e1f48;
+    --선: #e2d4c0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
-    margin: 0;
-    background: #f5ecd9;
-    color: #4a2c1a;
-    font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-    font-size: 18px;
+    background: var(--배경);
+    color: var(--글씨);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    font-size: 17px;
     line-height: 1.7;
-    padding-bottom: 90px;
+    padding-bottom: 96px; /* 아래 고정 버튼에 가려지지 않도록 */
+    word-break: keep-all;
   }
-  .wrap { max-width: 600px; margin: 0 auto; padding: 16px; }
-  .top-img { text-align: center; }
-  .top-img img { max-width: 100%; height: auto; border-radius: 12px; }
-  h1 { text-align: center; font-size: 34px; margin: 12px 0; }
-  .intro { text-align: center; margin-bottom: 20px; }
-  .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .menu button {
-    font-size: 19px; padding: 16px 8px; border: 2px solid #7b2d6b;
-    background: #fffaf0; color: #4a2c1a; border-radius: 10px; cursor: pointer;
-    font-family: inherit;
+
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 20px;
   }
-  .menu button:hover, .menu button.on { background: #7b2d6b; color: #fff; }
-  #guide {
-    margin-top: 16px; padding: 16px; background: #fffaf0;
-    border-left: 6px solid #7b2d6b; border-radius: 8px; min-height: 80px;
+
+  /* ===== 제목 ===== */
+  header {
+    text-align: center;
+    padding: 56px 0 28px;
   }
-  .info { margin-top: 24px; text-align: center; }
-  .bar {
-    position: fixed; left: 0; right: 0; bottom: 0; display: flex; gap: 8px;
-    padding: 10px; background: #f5ecd9; border-top: 1px solid #cdbb98;
+  header .작은글 {
+    color: var(--강조);
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
   }
-  .bar a, .bar button {
-    flex: 1; text-align: center; padding: 14px 0; font-size: 19px; font-weight: bold;
-    background: #7b2d6b; color: #fff; border: none; border-radius: 10px;
-    text-decoration: none; font-family: inherit; cursor: pointer;
+  header h1 {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
   }
-  .bar a:hover, .bar button:hover { background: #5e2052; }
+  header .줄 {
+    width: 48px;
+    height: 3px;
+    background: var(--강조);
+    margin: 20px auto 0;
+    border-radius: 2px;
+  }
+
+  /* ===== 소개 글 ===== */
+  .소개 {
+    text-align: center;
+    color: var(--연한글씨);
+    margin-bottom: 36px;
+  }
+  .소개 p + p { margin-top: 4px; }
+
+  /* ===== 메뉴 버튼 ===== */
+  .메뉴안내 {
+    text-align: center;
+    font-size: 15px;
+    color: var(--연한글씨);
+    margin-bottom: 12px;
+  }
+  .메뉴 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .메뉴 button {
+    font: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--강조);
+    background: var(--카드);
+    border: 2px solid var(--강조);
+    border-radius: 14px;
+    padding: 20px 8px;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .메뉴 button:hover,
+  .메뉴 button:focus-visible {
+    background: var(--강조);
+    color: #fff;
+    outline: none;
+  }
+  .메뉴 button.선택됨 {
+    background: var(--강조);
+    color: #fff;
+  }
+
+  /* ===== 안내 글 칸 ===== */
+  .안내칸 {
+    margin-top: 16px;
+    background: var(--카드);
+    border: 1px solid var(--선);
+    border-radius: 14px;
+    padding: 22px 20px;
+    min-height: 120px;
+  }
+  .안내칸 h2 {
+    font-size: 20px;
+    color: var(--강조);
+    margin-bottom: 8px;
+  }
+  .안내칸 .처음 {
+    color: var(--연한글씨);
+    text-align: center;
+    padding-top: 26px;
+  }
+
+  /* ===== 연락처 ===== */
+  footer {
+    margin-top: 44px;
+    border-top: 1px solid var(--선);
+    padding: 28px 0 20px;
+    text-align: center;
+  }
+  footer h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  footer .번호 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--강조);
+    text-decoration: none;
+  }
+  footer .시간 { color: var(--연한글씨); margin-top: 4px; }
+
+  /* ===== 아래 고정 버튼 ===== */
+  .고정버튼 {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    background: var(--배경);
+    border-top: 1px solid var(--선);
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    z-index: 10;
+  }
+  .고정버튼 a {
+    flex: 1;
+    max-width: 300px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 15px 0;
+    border-radius: 12px;
+    transition: background-color 0.15s;
+  }
+  .전화 {
+    background: var(--강조);
+    color: #fff;
+  }
+  .전화:hover { background: var(--강조진하게); }
+  .예약 {
+    background: var(--카드);
+    color: var(--강조);
+    border: 2px solid var(--강조);
+  }
+  .예약:hover { background: #f1e3ea; }
 </style>
 </head>
 <body>
+
 <div class="wrap">
 
-  <div class="top-img">
-    <img src="little_cloud_wizard.png" alt="황금 구슬을 든 구름 도사 꼬마">
-  </div>
+  <header>
+    <p class="작은글">사주 · 궁합 · 작명</p>
+    <h1>운세 상담소</h1>
+    <div class="줄"></div>
+  </header>
 
-  <h1>운세 상담소</h1>
+  <!-- 소개 글 세 줄 (문구는 바꾸셔도 됩니다) -->
+  <section class="소개">
+    <p>타고난 사주로 지금의 흐름을 살펴드립니다.</p>
+    <p>궁합과 작명까지, 한 분 한 분 정성껏 상담합니다.</p>
+    <p>편안한 마음으로 부담 없이 문의하세요.</p>
+  </section>
 
-  <div class="intro">
-    사주 풀이, 궁합 상담, 작명을 도와드립니다.<br>
-    차분히 이야기 나누며 마음의 길을 함께 찾아요.<br>
-    편하게 문의해 주세요.
-  </div>
+  <p class="메뉴안내">궁금한 메뉴를 눌러 보세요</p>
+  <nav class="메뉴">
+    <button type="button" data-id="saju">사주 풀이</button>
+    <button type="button" data-id="gunghap">궁합 보기</button>
+    <button type="button" data-id="name">작명 서비스</button>
+    <button type="button" data-id="reserve">예약 문의</button>
+  </nav>
 
-  <div class="menu">
-    <button onclick="show(this,'saju')">사주 풀이</button>
-    <button onclick="show(this,'gunghap')">궁합 보기</button>
-    <button onclick="show(this,'name')">작명 서비스</button>
-    <button onclick="show(this,'book')">예약 문의</button>
-  </div>
+  <section class="안내칸" id="안내칸" aria-live="polite">
+    <p class="처음">위 메뉴를 누르면 이곳에 안내가 나옵니다.</p>
+  </section>
 
-  <div id="guide">위 버튼을 눌러 안내를 확인하세요.</div>
+  <footer>
+    <h2>연락처</h2>
+    <a class="번호" href="tel:01000000000">010-0000-0000</a>
+    <p class="시간">평일 10시 ~ 19시</p>
+  </footer>
 
-  <div class="info">
-    <b>전화 010-1234-5678</b><br>
-    영업시간: 평일 10시 ~ 19시
-  </div>
 </div>
 
-<div class="bar">
-  <a href="tel:01012345678">전화하기</a>
-  <button onclick="show(document.querySelectorAll('.menu button')[3],'book'); document.getElementById('guide').scrollIntoView();">예약 문의</button>
+<!-- 화면 아래에 항상 보이는 버튼 -->
+<div class="고정버튼">
+  <a class="전화" href="tel:01000000000">📞 전화하기</a>
+  <a class="예약" href="#안내칸" id="예약버튼">예약 문의</a>
 </div>
 
 <script>
-  var text = {
-    saju: "태어난 날과 시간으로 타고난 성향과 앞으로의 흐름을 풀어드립니다.",
-    gunghap: "두 분의 생년월일로 서로 잘 맞는 점과 조심할 점을 살펴드립니다.",
-    name: "아기 이름, 새 이름, 가게 이름을 좋은 뜻과 기운으로 지어드립니다.",
-    book: "전화로 편하게 예약해 주세요. 평일 10시 ~ 19시, 010-1234-5678"
+  // 메뉴별 안내 글 (문구는 바꾸셔도 됩니다)
+  var 안내 = {
+    saju: {
+      제목: "사주 풀이",
+      글: "태어난 해·달·날·시를 바탕으로 성격, 재물, 건강, 올해의 흐름을 풀어 드립니다. 생년월일과 태어난 시간을 알려 주세요."
+    },
+    gunghap: {
+      제목: "궁합 보기",
+      글: "두 분의 사주를 함께 보며 잘 맞는 점과 서로 조심할 점을 알려 드립니다. 연인, 부부, 가족 궁합 모두 가능합니다."
+    },
+    name: {
+      제목: "작명 서비스",
+      글: "아기 이름, 개명, 가게 이름을 사주에 맞게 지어 드립니다. 여러 후보를 뜻과 함께 설명해 드립니다."
+    },
+    reserve: {
+      제목: "예약 문의",
+      글: "평일 10시부터 19시까지 전화로 예약하실 수 있습니다. 아래 '전화하기' 버튼을 누르시면 바로 연결됩니다."
+    }
   };
-  function show(btn, key) {
-    document.getElementById('guide').textContent = text[key];
-    var all = document.querySelectorAll('.menu button');
-    for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
-    btn.classList.add('on');
+
+  var 칸 = document.getElementById("안내칸");
+  var 버튼들 = document.querySelectorAll(".메뉴 button");
+
+  function 보여주기(id) {
+    var 내용 = 안내[id];
+    칸.innerHTML = "<h2>" + 내용.제목 + "</h2><p>" + 내용.글 + "</p>";
+    버튼들.forEach(function (b) {
+      b.classList.toggle("선택됨", b.dataset.id === id);
+    });
   }
+
+  버튼들.forEach(function (b) {
+    b.addEventListener("click", function () { 보여주기(b.dataset.id); });
+  });
+
+  // 아래 '예약 문의' 버튼을 누르면 예약 안내를 보여줌
+  document.getElementById("예약버튼").addEventListener("click", function () {
+    보여주기("reserve");
+  });
 </script>
+
 </body>
 </html>
