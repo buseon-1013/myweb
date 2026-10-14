@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>운세 상담소</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&display=swap" rel="stylesheet">
 <style>
   /* ===== 색상 (여기서 바꾸면 전체 색이 바뀝니다) ===== */
   :root {
@@ -32,6 +35,104 @@
   header .작은글 { color: var(--강조); font-size: 16px; letter-spacing: 0.15em; margin-bottom: 6px; }
   header h1 { font-size: 38px; font-weight: 800; letter-spacing: 0.04em; }
   header .줄 { width: 48px; height: 3px; background: var(--강조); margin: 18px auto 0; border-radius: 2px; }
+
+  /* ===== 포스터 슬라이드 ===== */
+  .섹션제목 { font-size: 18px; font-weight: 800; margin-bottom: 12px; }
+  .슬라이드틀 { position: relative; margin: 0 -20px 6px; }
+  .슬라이드 {
+    display: flex; gap: 12px;
+    overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 4px 20px 18px;
+    scroll-padding: 0 20px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .슬라이드::-webkit-scrollbar { display: none; }
+  .포스터 {
+    position: relative; flex: 0 0 72%; max-width: 300px;
+    aspect-ratio: 1 / 1;
+    scroll-snap-align: start;
+    padding: 0; border: none; border-radius: 18px; overflow: hidden;
+    cursor: pointer; font: inherit; text-align: center; color: #fff;
+    background: #1d1533;
+    box-shadow: 0 10px 24px rgba(40, 20, 80, 0.22);
+    transition: transform 0.2s;
+  }
+  .포스터:hover, .포스터:focus-visible { transform: translateY(-3px); outline: none; }
+  .포스터:focus-visible { box-shadow: 0 0 0 3px var(--강조); }
+  .포스터 svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .포스터 img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .포스터 .글 { position: absolute; left: 10px; right: 10px; bottom: 7%; }
+  .포스터 .연도 { font-family: "Nanum Myeongjo", serif; font-style: italic; font-size: 19px; letter-spacing: 0.08em; opacity: 0.92; }
+  .포스터 .큰제목 {
+    font-family: "Nanum Myeongjo", serif; font-size: 30px; font-weight: 800;
+    letter-spacing: 0.03em; line-height: 1.25;
+    text-shadow: 0 0 16px var(--빛, rgba(255,170,210,.75)), 0 2px 6px rgba(0,0,0,.55);
+  }
+  .포스터 .작은제목 { font-size: 16px; margin-top: 6px; opacity: 0.94; line-height: 1.45; text-shadow: 0 1px 4px rgba(0,0,0,.7); }
+
+  .포스터 .별 { animation: 반짝 3s ease-in-out infinite; }
+  .포스터 .별:nth-of-type(2n) { animation-delay: 1.2s; }
+  .포스터 .별:nth-of-type(3n) { animation-delay: 2.1s; }
+  @keyframes 반짝 { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+  .포스터 .둥실 { animation: 둥실 4s ease-in-out infinite; }
+  @keyframes 둥실 { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .포스터 .떨어짐 { animation: 떨어짐 7s linear infinite; }
+  .포스터 .떨어짐:nth-of-type(2n) { animation-duration: 9s; animation-delay: -3s; }
+  .포스터 .떨어짐:nth-of-type(3n) { animation-duration: 8s; animation-delay: -5s; }
+  @keyframes 떨어짐 { from { transform: translateY(-40px); } to { transform: translateY(440px); } }
+  @media (prefers-reduced-motion: reduce) { .포스터 .별, .포스터 .둥실, .포스터 .떨어짐 { animation: none; } }
+
+  /* 아래 점 (몇 번째 슬라이드인지) */
+  .점들 { display: flex; justify-content: center; gap: 6px; margin-bottom: 30px; }
+  .점들 span { width: 7px; height: 7px; border-radius: 999px; background: var(--선); transition: width 0.2s, background-color 0.2s; }
+  .점들 span.지금 { width: 20px; background: var(--강조); }
+
+  /* 컴퓨터에서만 보이는 좌우 화살표 */
+  .화살표 {
+    display: none; position: absolute; top: 42%; z-index: 2;
+    width: 40px; height: 40px; border-radius: 50%;
+    border: none; cursor: pointer; font-size: 20px; line-height: 40px;
+    background: rgba(255,255,255,.92); color: var(--강조);
+    box-shadow: 0 2px 8px rgba(0,0,0,.18);
+  }
+  .화살표.왼쪽 { left: 6px; } .화살표.오른쪽 { right: 6px; }
+  @media (hover: hover) and (pointer: fine) { .화살표 { display: block; } }
+
+  /* ===== 첫 화면: 사주 종류 고르기 ===== */
+  .고르기안내 { text-align: center; font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+  .종류목록 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .종류 {
+    font: inherit; text-align: left; cursor: pointer;
+    background: var(--카드);
+    border: 1.5px solid var(--선);
+    border-radius: 16px;
+    padding: 18px 16px;
+    color: var(--글씨);
+    transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  }
+  .종류:hover, .종류:focus-visible {
+    border-color: var(--강조); outline: none;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(107, 78, 158, 0.12);
+  }
+  .종류 .그림 { font-size: 34px; line-height: 1.2; }
+  .종류 .이름 { display: block; font-size: 18px; font-weight: 800; margin-top: 6px; }
+  .종류 .설명 { display: block; font-size: 16px; color: var(--연한글씨); line-height: 1.5; margin-top: 2px; }
+
+  /* ===== 고른 사주 표시 ===== */
+  .고른사주 {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    margin-bottom: 14px;
+  }
+  .고른사주 .제목 { font-size: 20px; font-weight: 800; color: var(--강조); }
+  .뒤로 {
+    font: inherit; font-size: 16px; cursor: pointer;
+    background: none; border: none; color: var(--연한글씨);
+    padding: 6px 0; text-decoration: underline;
+  }
+  .뒤로:hover { color: var(--강조); }
 
   /* ===== 입력 칸 ===== */
   .입력칸 {
@@ -202,7 +303,29 @@
     <div class="줄"></div>
   </header>
 
-  <!-- ===== 입력 칸 ===== -->
+  <!-- ===== 첫 화면: 사주 종류 고르기 ===== -->
+  <section id="선택화면">
+
+    <!-- 포스터 슬라이드 (옆으로 밀어서 넘기기) -->
+    <p class="섹션제목">지금 많이 보는 사주 ✨</p>
+    <div class="슬라이드틀">
+      <button type="button" class="화살표 왼쪽" id="왼쪽" aria-label="이전">‹</button>
+      <div class="슬라이드" id="슬라이드"></div>
+      <button type="button" class="화살표 오른쪽" id="오른쪽" aria-label="다음">›</button>
+    </div>
+    <div class="점들" id="점들" aria-hidden="true"></div>
+
+    <p class="고르기안내">어떤 사주가 궁금하세요?</p>
+    <div class="종류목록" id="종류목록"></div>
+  </section>
+
+  <!-- ===== 두 번째 화면: 정보 입력 (종류를 고르면 나타남) ===== -->
+  <div id="입력화면" hidden>
+  <div class="고른사주">
+    <span class="제목" id="고른제목"></span>
+    <button type="button" class="뒤로" id="뒤로">← 다른 사주 고르기</button>
+  </div>
+
   <section class="입력칸">
 
     <div class="항목">
@@ -256,6 +379,11 @@
     </div>
 
     <div class="결과칸">
+      <h2 id="종류풀이제목"></h2>
+      <ul id="종류풀이"></ul>
+    </div>
+
+    <div class="결과칸">
       <h2>타고난 성향</h2>
       <ul id="성향"></ul>
     </div>
@@ -277,6 +405,7 @@
 
     <p class="참고">위 내용은 띠를 기준으로 한 일반적인 풀이입니다.</p>
   </section>
+  </div><!-- 입력화면 끝 -->
 
   <!-- ===== 예약 문의 (구글 폼) ===== -->
   <section class="예약칸" id="예약문의">
@@ -339,11 +468,250 @@
   ];
   var 천간 = ["갑", "을", "병", "정", "무", "기", "경", "신", "임", "계"];
 
+  /* ===== 사주 종류 (여기에 추가·수정하면 첫 화면 메뉴가 바뀝니다) ===== */
+  var 사주종류 = [
+    { id: "some", 그림: "💕", 이름: "썸 사주", 설명: "지금 그 사람과 나, 어떻게 흘러갈까?",
+      풀이: ["설레는 마음을 솔직하게 보여 줄수록 관계가 한 걸음 가까워지기 쉬운 흐름이에요.",
+             "상대의 작은 신호에 너무 깊이 고민하기보다, 편하게 한 번 더 다가가 보셔도 좋아요.",
+             "함께 보내는 시간의 즐거움에 집중하면 자연스럽게 마음이 전해질 수 있어요."] },
+    { id: "marriage", 그림: "💍", 이름: "결혼 사주", 설명: "나에게 맞는 짝과 결혼의 흐름",
+      풀이: ["서로의 생활 방식을 존중해 주는 사람과 오래 편안한 관계를 만들기 좋은 편이에요.",
+             "결혼은 서두르기보다 대화를 충분히 나누며 함께 준비할 때 더 든든해질 수 있어요.",
+             "가족과의 관계를 따뜻하게 챙기면 두 사람의 앞날에도 좋은 힘이 되어 줄 거예요."] },
+    { id: "love", 그림: "🌹", 이름: "연애 사주", 설명: "나는 사랑할 때 어떤 사람일까?",
+      풀이: ["마음을 준 사람에게는 정성을 아끼지 않는 따뜻한 연애를 하는 편이에요.",
+             "내 감정만큼 상대의 속도도 살펴 주면 관계가 한결 편안해질 수 있어요.",
+             "새로운 만남에 열린 마음을 가지면 좋은 인연을 알아보기 쉬운 흐름이에요."] },
+    { id: "reunion", 그림: "🌙", 이름: "재회 사주", 설명: "다시 이어질 수 있을까?",
+      풀이: ["지난 인연을 돌아보며 내 마음이 정말 원하는 것이 무엇인지 정리해 보기 좋은 때예요.",
+             "다시 연락하고 싶다면 서운했던 이야기보다 지금의 내 모습을 보여 주는 편이 좋아요.",
+             "어떤 결과든 나를 아끼는 선택을 할 때 마음이 더 가벼워질 수 있어요."] },
+    { id: "career", 그림: "💼", 이름: "직업 사주", 설명: "나에게 맞는 일과 커리어",
+      풀이: ["스스로 계획을 세우고 결과를 확인할 수 있는 일에서 힘을 잘 발휘하는 편이에요.",
+             "한 분야를 꾸준히 깊게 파고들면 전문성이 든든한 무기가 되어 줄 수 있어요.",
+             "함께 일하는 사람들과 생각을 자주 나누면 기회가 더 넓어질 거예요."] },
+    { id: "money", 그림: "💰", 이름: "재물 사주", 설명: "돈이 모이는 나만의 방법",
+      풀이: ["작은 돈도 차곡차곡 모으는 습관이 큰 힘이 되어 주는 사주 흐름이에요.",
+             "큰 결정은 충분히 알아보고 천천히 할 때 더 든든한 결과로 이어질 수 있어요.",
+             "나에게 맞는 저축 목표를 정해 두면 재물을 모으는 재미가 커질 거예요."] }
+  ];
+  var 고른종류 = null;
+  var 올해 = new Date().getFullYear();
+
+  /* ===== 포스터 그림 (코드로 그린 그림이라 이미지 파일이 필요 없습니다) ===== */
+  // 하트 모양
+  function 하트(x, y, 크기, 각도, 색) {
+    return '<path transform="translate(' + x + ' ' + y + ') rotate(' + 각도 + ') scale(' + 크기 + ')" ' +
+           'd="M0 10 C0 -4 22 -4 22 10 C22 -4 44 -4 44 10 C44 26 22 38 22 44 C22 38 0 26 0 10Z" fill="' + 색 + '"/>';
+  }
+  // 반짝이는 별 여러 개
+  function 별들(점목록, 색) {
+    return '<g fill="' + (색 || "#fff") + '">' + 점목록.map(function (p) {
+      return '<circle class="별" cx="' + p[0] + '" cy="' + p[1] + '" r="' + p[2] + '"/>';
+    }).join("") + '</g>';
+  }
+  // 네 갈래 반짝임
+  function 반짝(x, y, r, 색) {
+    return '<path class="별" transform="translate(' + x + ' ' + y + ')" fill="' + 색 + '" ' +
+           'd="M0 ' + (-r) + ' Q' + (r * .18) + ' ' + (-r * .18) + ' ' + r + ' 0 Q' + (r * .18) + ' ' + (r * .18) + ' 0 ' + r +
+           ' Q' + (-r * .18) + ' ' + (r * .18) + ' ' + (-r) + ' 0 Q' + (-r * .18) + ' ' + (-r * .18) + ' 0 ' + (-r) + 'Z"/>';
+  }
+  // 하늘 그라데이션 + 공통 효과 + 아래 그늘
+  function 바탕(id, 색들) {
+    var 멈춤 = 색들.map(function (c, i) {
+      return '<stop offset="' + (i / (색들.length - 1)) + '" stop-color="' + c + '"/>';
+    }).join("");
+    return '<defs>' +
+      '<linearGradient id="' + id + '하늘" x1="0" y1="0" x2="0" y2="1">' + 멈춤 + '</linearGradient>' +
+      '<linearGradient id="' + id + '그늘" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient>' +
+      '<filter id="' + id + '흐림" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>' +
+      '<filter id="' + id + '번짐" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>' +
+      '</defs><rect width="300" height="400" fill="url(#' + id + '하늘)"/>';
+  }
+  function 그늘(id) { return '<rect y="210" width="300" height="190" fill="url(#' + id + '그늘)"/>'; }
+
+  var 포스터그림 = {
+    // 💕 썸: 달밤의 물가, 서로 기울어진 두 마음
+    some: function (id) {
+      return 바탕(id, ["#140f2b", "#3b2763", "#7a3f7e"]) +
+        '<circle cx="232" cy="62" r="80" fill="#ffe3f0" opacity=".18" filter="url(#' + id + '흐림)"/>' +
+        '<circle cx="232" cy="62" r="22" fill="#fff4e0"/>' +
+        '<g filter="url(#' + id + '흐림)" opacity=".75"><circle cx="34" cy="50" r="13" fill="#ffd27a"/><circle cx="80" cy="28" r="9" fill="#ff9ec7"/><circle cx="276" cy="180" r="11" fill="#ff9ec7"/><circle cx="16" cy="180" r="10" fill="#c9a6ff"/></g>' +
+        별들([[120, 40, 1.5], [170, 22, 1.1], [150, 110, 1.3], [95, 80, 1], [280, 30, 1.2], [30, 120, 1.1]]) +
+        '<rect y="215" width="300" height="185" fill="#1e3766"/>' +
+        '<g stroke="#9fc4ff" stroke-width="1.3" fill="none" opacity=".35" stroke-linecap="round"><path d="M14 240 q24 -5 48 0 t48 0"/><path d="M170 255 q24 -5 48 0 t48 0"/><path d="M40 280 q28 -6 56 0 t56 0"/><path d="M190 300 q24 -5 48 0 t48 0"/></g>' +
+        '<g class="둥실"><g filter="url(#' + id + '번짐)" opacity=".8">' + 하트(106, 92, 1, -12, "#ff7fb3") + 하트(146, 84, 1, 12, "#c9a6ff") + '</g>' +
+        하트(106, 92, 1, -12, "#ffb3d1") + 하트(146, 84, 1, 12, "#e3d1ff") + '</g>' + 그늘(id);
+    },
+    // 💍 결혼: 노을빛 하늘, 맞물린 두 반지, 흩날리는 꽃잎
+    marriage: function (id) {
+      var 꽃잎 = [[40, 0], [110, 120], [200, 40], [260, 160], [70, 220], [230, 260]].map(function (p) {
+        return '<ellipse class="떨어짐" cx="' + p[0] + '" cy="' + p[1] + '" rx="5" ry="3" fill="#ffd6e0" opacity=".85" transform="rotate(25 ' + p[0] + ' ' + p[1] + ')"/>';
+      }).join("");
+      return 바탕(id, ["#fbe3cf", "#eaa6a3", "#8a5577", "#3f2747"]) +
+        '<circle cx="150" cy="135" r="95" fill="#fff3d6" opacity=".45" filter="url(#' + id + '흐림)"/>' +
+        '<g class="둥실" fill="none" stroke-width="7">' +
+        '<circle cx="132" cy="135" r="32" stroke="#e8c26a"/><circle cx="170" cy="135" r="32" stroke="#f6dc94"/>' +
+        '<path d="M132 103 a32 32 0 0 1 22 9" stroke="#e8c26a"/>' +
+        '<path transform="translate(170 96)" d="M-9 0 L0 -10 L9 0 L0 9Z" fill="#fff" stroke="#e9f4ff" stroke-width="2"/>' +
+        '</g>' + 반짝(205, 80, 9, "#fff") + 반짝(95, 95, 6, "#fff8e1") + 반짝(222, 175, 5, "#fff") +
+        꽃잎 + 그늘(id);
+    },
+    // 🌹 연애: 분홍 노을, 빛나는 큰 하트와 작은 하트들
+    love: function (id) {
+      var 작은하트 = [[40, 60, .45, -15], [240, 40, .4, 15], [60, 170, .35, 10], [235, 150, .5, -10], [190, 230, .3, 20]].map(function (h) {
+        return 하트(h[0], h[1], h[2], h[3], "#ffd0e0");
+      }).join("");
+      return 바탕(id, ["#ffc0d3", "#e46a95", "#8c2c5e", "#3a1230"]) +
+        '<g class="별" opacity=".7">' + 작은하트 + '</g>' +
+        '<g class="둥실"><g filter="url(#' + id + '흐림)" opacity=".9">' + 하트(106, 70, 2.1, 0, "#ff4f8b") + '</g>' +
+        하트(106, 70, 2.1, 0, "#ff8fb4") +
+        '<path d="M128 92 q12 -12 26 -4" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" opacity=".6"/></g>' +
+        반짝(80, 110, 7, "#fff") + 반짝(225, 95, 6, "#fff") + 그늘(id);
+    },
+    // 🌙 재회: 깊은 별밤, 은하수, 점선으로 다시 이어지는 두 별
+    reunion: function (id) {
+      var 많은별 = [];
+      for (var i = 0; i < 40; i++) 많은별.push([(i * 73) % 300, (i * 131) % 260, (i % 3) * 0.4 + 0.7]);
+      return 바탕(id, ["#060a22", "#16245a", "#3b2a6e", "#1a1036"]) +
+        '<ellipse cx="150" cy="140" rx="210" ry="38" fill="#b9a6ff" opacity=".28" transform="rotate(-28 150 140)" filter="url(#' + id + '흐림)"/>' +
+        '<ellipse cx="150" cy="140" rx="160" ry="14" fill="#fff" opacity=".18" transform="rotate(-28 150 140)" filter="url(#' + id + '흐림)"/>' +
+        별들(많은별) +
+        '<path d="M70 70 L120 20" stroke="#fff" stroke-width="1.2" opacity=".6" stroke-linecap="round"/>' +
+        '<line x1="92" y1="150" x2="208" y2="112" stroke="#ffe7a8" stroke-width="1.6" stroke-dasharray="4 6" opacity=".8"/>' +
+        '<g filter="url(#' + id + '번짐)"><circle cx="92" cy="150" r="10" fill="#ffd27a"/><circle cx="208" cy="112" r="10" fill="#c9d8ff"/></g>' +
+        반짝(92, 150, 12, "#fff6dc") + 반짝(208, 112, 12, "#eef3ff") + 그늘(id);
+    },
+    // 💼 직업: 새벽 도시, 떠오르는 해, 불 켜진 창문
+    career: function (id) {
+      var 건물 = [[0, 210, 40, 190], [38, 170, 34, 230], [70, 230, 30, 170], [98, 150, 42, 250], [138, 200, 30, 200], [166, 130, 38, 270], [202, 185, 34, 215], [234, 160, 36, 240], [268, 215, 32, 185]];
+      var 창문 = "";
+      건물.forEach(function (b, n) {
+        for (var y = b[1] + 12; y < 200; y += 16) {
+          for (var x = b[0] + 6; x < b[0] + b[2] - 6; x += 10) {
+            if ((x * 7 + y * 3 + n) % 5 < 2) 창문 += '<rect x="' + x + '" y="' + y + '" width="4" height="6" fill="#ffd98a" opacity=".85"/>';
+          }
+        }
+      });
+      return 바탕(id, ["#0d2238", "#24577a", "#e8a86a", "#f4c88c"]) +
+        '<circle cx="150" cy="230" r="90" fill="#ffe1a8" opacity=".55" filter="url(#' + id + '흐림)"/>' +
+        '<circle cx="150" cy="232" r="38" fill="#fff0cc"/>' +
+        별들([[40, 30, 1.2], [120, 20, 1], [230, 40, 1.3], [270, 80, 1]]) +
+        '<g fill="#0c1a2a">' + 건물.map(function (b) { return '<rect x="' + b[0] + '" y="' + b[1] + '" width="' + b[2] + '" height="' + b[3] + '"/>'; }).join("") + '</g>' +
+        창문 + 그늘(id);
+    },
+    // 💰 재물: 깊은 초록빛, 차곡차곡 쌓인 금화와 반짝임
+    money: function (id) {
+      function 금화더미(x, 개수) {
+        var g = "";
+        for (var i = 0; i < 개수; i++) {
+          var y = 195 - i * 9;
+          g += '<ellipse cx="' + x + '" cy="' + (y + 4) + '" rx="26" ry="9" fill="#a8761f"/>' +
+               '<ellipse cx="' + x + '" cy="' + y + '" rx="26" ry="9" fill="#f2c94c"/>' +
+               '<ellipse cx="' + x + '" cy="' + y + '" rx="17" ry="5.5" fill="none" stroke="#c8962c" stroke-width="1.5"/>';
+        }
+        return g;
+      }
+      return 바탕(id, ["#0b241d", "#1b5444", "#2f6b4f", "#16261c"]) +
+        '<circle cx="150" cy="170" r="100" fill="#ffd96b" opacity=".35" filter="url(#' + id + '흐림)"/>' +
+        금화더미(95, 5) + 금화더미(150, 8) + 금화더미(205, 4) +
+        '<g class="둥실"><circle cx="150" cy="88" r="22" fill="#f6d365" stroke="#b9862a" stroke-width="3"/>' +
+        '<rect x="143" y="81" width="14" height="14" fill="none" stroke="#b9862a" stroke-width="3"/></g>' +
+        반짝(110, 60, 8, "#fff6c8") + 반짝(200, 90, 10, "#fff6c8") + 반짝(70, 140, 6, "#fff") + 반짝(240, 150, 7, "#fff") +
+        그늘(id);
+    }
+  };
+
+  // 포스터 글씨 (부제목, 제목 빛 색)
+  var 포스터글 = {
+    some:     { 제목: "썸 사주",   부제: "우리 사이, 어디쯤 와 있을까?",   빛: "rgba(255,170,210,.8)",
+                이미지: "2026_something_saju.png" },  // 그림 파일이 있으면 그림으로, 없으면 코드 그림으로 보여 줍니다
+    marriage: { 제목: "결혼 사주", 부제: "평생 함께할 인연, 언제 만날까?", 빛: "rgba(255,214,140,.85)" },
+    love:     { 제목: "연애 사주", 부제: "사랑할 때 나는 어떤 모습일까?", 빛: "rgba(255,120,170,.85)" },
+    reunion:  { 제목: "재회 사주", 부제: "흩어진 별, 다시 닿을 수 있을까?", 빛: "rgba(190,200,255,.85)" },
+    career:   { 제목: "직업 사주", 부제: "내가 가장 빛나는 일은?", 빛: "rgba(255,200,130,.85)" },
+    money:    { 제목: "재물 사주", 부제: "나에게 돈이 모이는 길은?",       빛: "rgba(255,220,110,.85)" }
+  };
+
+  /* 포스터 슬라이드 만들기 */
+  var 슬라이드 = document.getElementById("슬라이드");
+  var 점들 = document.getElementById("점들");
+  사주종류.forEach(function (종류) {
+    var 글 = 포스터글[종류.id];
+    var 포스터 = document.createElement("button");
+    포스터.type = "button";
+    포스터.className = "포스터";
+    포스터.style.setProperty("--빛", 글.빛);
+    포스터.setAttribute("aria-label", 올해 + " " + 글.제목 + " 보기");
+    var 코드그림 =
+      '<svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">' + 포스터그림[종류.id]("p" + 종류.id) + '</svg>' +
+      '<div class="글"><div class="연도">' + 올해 + '</div><div class="큰제목">' + 글.제목 + '</div><div class="작은제목">' + 글.부제 + '</div></div>';
+    if (글.이미지) {
+      // 그림 파일 포스터 (제목이 그림 안에 들어 있어서 글씨를 따로 얹지 않음)
+      var 그림 = document.createElement("img");
+      그림.src = 글.이미지;
+      그림.alt = 올해 + " " + 글.제목 + " 포스터";
+      그림.onerror = function () { 포스터.innerHTML = 코드그림; };  // 파일을 못 찾으면 코드 그림으로 대신
+      포스터.appendChild(그림);
+    } else {
+      포스터.innerHTML = 코드그림;
+    }
+    포스터.addEventListener("click", function () { 종류고르기(종류); });
+    슬라이드.appendChild(포스터);
+    점들.appendChild(document.createElement("span"));
+  });
+
+  // 지금 보고 있는 슬라이드 점 표시
+  function 점갱신() {
+    var 첫포스터 = 슬라이드.firstElementChild;
+    var 한칸 = 첫포스터.offsetWidth + 12;
+    var 끝 = 슬라이드.scrollLeft + 슬라이드.clientWidth >= 슬라이드.scrollWidth - 4;
+    var 번호 = 끝 ? 사주종류.length - 1 : Math.round(슬라이드.scrollLeft / 한칸);
+    Array.prototype.forEach.call(점들.children, function (점, i) { 점.classList.toggle("지금", i === 번호); });
+  }
+  슬라이드.addEventListener("scroll", 점갱신, { passive: true });
+  window.addEventListener("resize", 점갱신);
+
+  // 컴퓨터용 좌우 화살표
+  function 넘기기(방향) {
+    슬라이드.scrollBy({ left: 방향 * (슬라이드.firstElementChild.offsetWidth + 12), behavior: "smooth" });
+  }
+  document.getElementById("왼쪽").addEventListener("click", function () { 넘기기(-1); });
+  document.getElementById("오른쪽").addEventListener("click", function () { 넘기기(1); });
+  점갱신();
+
+  /* 첫 화면 메뉴 만들기 */
+  var 종류목록 = document.getElementById("종류목록");
+  사주종류.forEach(function (종류) {
+    var 버튼 = document.createElement("button");
+    버튼.type = "button";
+    버튼.className = "종류";
+    버튼.innerHTML = '<span class="그림">' + 종류.그림 + '</span>' +
+                    '<span class="이름">' + 종류.이름 + '</span>' +
+                    '<span class="설명">' + 종류.설명 + '</span>';
+    버튼.addEventListener("click", function () { 종류고르기(종류); });
+    종류목록.appendChild(버튼);
+  });
+
+  function 종류고르기(종류) {
+    고른종류 = 종류;
+    document.getElementById("고른제목").textContent = 종류.그림 + " " + 종류.이름;
+    document.getElementById("선택화면").hidden = true;
+    document.getElementById("입력화면").hidden = false;
+    document.getElementById("결과").classList.remove("보임");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.getElementById("뒤로").addEventListener("click", function () {
+    document.getElementById("입력화면").hidden = true;
+    document.getElementById("선택화면").hidden = false;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
   /* ===== 연, 월, 일 고르는 칸 채우기 ===== */
   var 연칸 = document.getElementById("연");
   var 월칸 = document.getElementById("월");
   var 일칸 = document.getElementById("일");
-  var 올해 = new Date().getFullYear();
 
   for (var y = 올해; y >= 1930; y--) 연칸.add(new Option(y + "년", y));
   for (var m = 1; m <= 12; m++) 월칸.add(new Option(m + "월", m));
@@ -394,6 +762,8 @@
       연도 + "년 " + 월칸.value + "월 " + 일칸.value + "일 · " +
       (시간 === "모름" ? "시간 모름" : 시간) + " · " + 성별.value;
 
+    document.getElementById("종류풀이제목").textContent = 고른종류.그림 + " " + 고른종류.이름 + " 풀이";
+    목록넣기("종류풀이", 고른종류.풀이);
     목록넣기("성향", 정보.성향);
     document.getElementById("조언제목").textContent = 올해 + "년 조언";
     목록넣기("조언", 정보.조언);
